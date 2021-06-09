@@ -1,59 +1,57 @@
 part of 'pages.dart';
 
 class MainMenu extends StatefulWidget {
-
   static const String routeName = "/mainmenu";
-
   @override
   _MainMenuState createState() => _MainMenuState();
 }
 
 class _MainMenuState extends State<MainMenu> {
 
-  int _selectedIndex = 0;
-
-  static List<Widget> _widgetOptions = <Widget>[
-    AddData(),
-    ListData(),
-    MyAccount(),
-  ];
-
-  void _onItemTapped(int index){
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  void initState(){
-    super.initState();
-  }
-
+   bool isLoading = false;
+  String msg = "Fail";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      appBar: AppBar(
+        title: Text("Main Menu"),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem> [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.note_add_rounded),
-            label: 'Add Data',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_rounded),
-            label: 'List Data',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_box_rounded),
-            label: 'My Account',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        elevation: 0,
-      ),
+      body: Stack(
+          children: [
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: ElevatedButton.icon(
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    await AuthServices.signOut().then((value) {
+                      if (value) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        AcitivityServices.showToast(
+                            "Logout success", Colors.greenAccent);
+                        Navigator.pushReplacementNamed(
+                            context, Login.routeName);
+                      } else {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        AcitivityServices.showToast(msg, Colors.redAccent);
+                      }
+                    });
+                  },
+                  icon: Icon(Icons.logout),
+                  label: Text("Logout"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.deepOrange[400],
+                    elevation: 0,
+                  )),
+            ),
+            isLoading == true ? AcitivityServices.loadings() : Container()
+          ],
+        )
     );
   }
 }

@@ -1,38 +1,67 @@
-import 'dart:io';
-
 import 'package:santiponotes/shared/shared.dart';
 import 'package:santiponotes/ui/pages/pages.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'src/pages/home.dart';
+import 'src/pages/note_form.dart';
+import 'src/pages/view_note.dart';
+import 'src/constants/routes.dart';
+import 'src/models/note.dart';
+import 'src/components/route_builder.dart';
 
-void enablePlatformOverrideForDesktop() {
-  if (!kIsWeb && (Platform.isMacOS || Platform.isWindows || Platform.isLinux)) {
-    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => NoteModel(),
+    child: MyApp()
+    
+    )
+  )
+};
+
+
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "SANTIPO NOTES",
+      theme: MyTheme.lightTheme(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Login(),
+        Login.routeName: (context) => Login(),
+        MainMenu.routeName: (context) => MainMenu(),
+        Register.routeName: (context) => Register(),
+      },
+    );
   }
-}
-
-void main() async {
-  enablePlatformOverrideForDesktop();
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Advanced MAD",
-      theme: MyTheme.lightTheme(),
+      title: 'Custom Notepad',
       initialRoute: '/',
-      routes: {
-        '/': (context) => Splash(),
-        MainMenu.routeName: (context) => MainMenu(), //modular
-        Login.routeName: (context) => Login(),
-        Register.routeName: (context) => Register(),
-        // 'history': (context) => History(),
+      // routes: {
+      //   '/': (context) => Home(),
+      //   '/add': (context) => NoteForm()
+      // },
+      onGenerateRoute: (RouteSettings settings) {
+        switch (settings.name){
+          case HOME:
+            return SlideFromRightRoute(page: Home());
+          case ADD_NOTE:
+            return SlideFromRightRoute(page: NoteForm());
+          case EDIT_NOTE:
+            return SlideFromRightRoute(page: NoteForm());
+          case VIEW_NOTE:
+            return SlideFromRightRoute(page: MyNote());
+          default:
+            return SlideFromRightRoute(page: Home());
+        }
       },
     );
   }
