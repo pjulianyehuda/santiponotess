@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "186273689443",
+    "project_id": "santiponotes",
+    "storage_bucket": "santiponotes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186273689443:android:7a7de93d27f996ccdc2d56",
+        "android_client_info": {
+          "package_name": "com.example.santiponotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186273689443-rp36kjnfnk2bs6qb5b3bvjjbl7vu7n6u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ_UK6LNREaq-bnZGyzVMAo4xmm3oUpL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186273689443-rp36kjnfnk2bs6qb5b3bvjjbl7vu7n6u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
